@@ -18,7 +18,7 @@ public abstract class Processor {
 		r = makeReader();
 	}
 
-	// I need 2 kinds of read function; this one will read tweets
+	// Need to update the return type later.
 	public Set<String> readFile(String filename) {
 		Set<String> s = r.readFile(filename);
 		return s;
