@@ -13,7 +13,7 @@ import java.util.*;
 public class JSONReader implements Reader {
 
 	@Override
-	public Set<String> readFile(String filename){
+	public Map<Integer, Violation> readFile(String filename){
 		return null;
 	}
 }

@@ -18,10 +18,9 @@ public abstract class Processor {
 		r = makeReader();
 	}
 
-	// Need to update the return type later.
-	public Set<String> readFile(String filename) {
-		Set<String> s = r.readFile(filename);
-		return s;
+	public Map<Integer, Violation> readFile(String filename) {
+		Map<Integer, Violation> m = r.readFile(filename);
+		return m;
 	}
 
 	protected abstract Reader makeReader();

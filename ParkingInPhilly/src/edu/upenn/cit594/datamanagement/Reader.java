@@ -11,6 +11,5 @@ import java.util.*;
 
 public interface Reader {
 
-	//Expect to update the return type later
-	public Set<String> readFile(String filename);
+	public Map<Integer, Violation> readFile(String filename);
 }

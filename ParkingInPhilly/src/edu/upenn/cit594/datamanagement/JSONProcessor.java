@@ -12,5 +12,6 @@ public class JSONProcessor extends Processor {
 	@Override
 	protected Reader makeReader() {
 		Reader r = new JSONReader();
+		return r;
 	}
 }
