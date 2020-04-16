@@ -82,6 +82,7 @@ public class JSONReader implements Reader {
 			System.out.println("Data file could not be read successfully.");
 			e.printStackTrace();
 		}
+		
 		return parsedData;
 	}
 }
