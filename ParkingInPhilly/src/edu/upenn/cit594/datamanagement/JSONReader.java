@@ -12,10 +12,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 /**
- * @author Aman Nischal and Katie Pizziketti
- * Methods to read in data from OpenDataPhilly in JSON file format.
- * Some data cleaning is also included when importing data.
+ * @author Aman Nischal and Katie Pizziketti Methods to read in data from
+ *         OpenDataPhilly in JSON file format. Some data cleaning is also
+ *         included when importing data.
  *
  */
 public class JSONReader implements Reader {
@@ -58,5 +59,29 @@ public class JSONReader implements Reader {
 		}
 
 		return parkingViolations;
+	public Set<String> readFile(String filename) {
+		Set<String> parsedData = new HashSet<String>();
+
+		try {
+			// create helper objects to parse JSON file
+			JSONParser parser = new JSONParser();
+			JSONArray dataArray = (JSONArray) parser.parse(new FileReader(filename));
+			Iterator iter = dataArray.iterator();
+
+			// iterate through the JSON object lines to get the desired data into the Set
+			while (iter.hasNext()) {
+
+				// get data from object into string
+				JSONObject data = (JSONObject) iter.next();
+
+				int fine = (int) data.get("fine");
+
+			}
+
+		} catch (ParseException | IOException e) {
+			System.out.println("Data file could not be read successfully.");
+			e.printStackTrace();
+		}
+		return parsedData;
 	}
 }
