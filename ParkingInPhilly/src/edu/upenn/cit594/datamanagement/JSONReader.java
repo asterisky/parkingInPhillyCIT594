@@ -35,8 +35,9 @@ public class JSONReader implements Reader {
 
 				// get data from object into string
 				JSONObject rowData = (JSONObject) iter.next();
-
-				LocalDateTime date = rowData.get("date").toString();
+				
+				String dateStringToParse = rowData.get("date").toString();
+				LocalDateTime date = LocalDateTime.parse(dateStringToParse);
 				int fine = (int) rowData.get("fine");
 				String violation = rowData.get("violation").toString();
 				int vehicleID = (int) rowData.get("vehicle ID");
