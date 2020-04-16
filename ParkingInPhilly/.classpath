@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"></classpathentry>
 	<classpathentry kind="src" path="src"/>
 <<<<<<< Upstream, based on branch 'master' of https://github.com/asterisky/parkingInPhillyCIT594.git
 	<classpathentry excluding="src/" kind="src" path=""/>
-	<classpathentry kind="lib" path="/Users/quetzalcoatl/Downloads/json-simple-1.1.1.jar"/>
 =======
-	<classpathentry kind="lib" path="/Users/quetzalcoatl/git/parkingInPhillyCIT594/ParkingInPhilly/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="json-simple-1.1.1.jar"/>
 >>>>>>> 102a7c1 Added data files and .jar for parsing JSON files to the build path.
 	<classpathentry kind="output" path="bin"/>
 </classpath>
