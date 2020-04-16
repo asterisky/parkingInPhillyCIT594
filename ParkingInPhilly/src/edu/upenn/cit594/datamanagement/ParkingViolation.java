@@ -7,7 +7,7 @@ public class ParkingViolation {
 	private String vehicleID;
 	private String vehicleState; 
 	private String violationID;
-	private String violationZip;
+	private int violationZip;
 	
 	ParkingViolation(String timestamp, double fine, String description, String vehicleID, String vehcileState,
 			String violationID, String violationZip, String vehicleState){
