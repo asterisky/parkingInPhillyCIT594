@@ -50,7 +50,7 @@ public class JSONReader implements Reader {
 				Violation v = new Violation(date, fine, violation, vehicleID, state, ticketID, zip);
 				parkingViolations.put(vehicleID, v);
 			}
-
+			//comment
 		} catch (ParseException | IOException e) {
 			System.out.println(
 					"Error reading JSON file.");
