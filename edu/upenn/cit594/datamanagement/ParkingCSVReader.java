@@ -1,3 +1,4 @@
+package edu.upenn.cit594.datamanagement;
 import java.io.File;
 import java.util.*;
 
@@ -8,9 +9,8 @@ public class ParkingCSVReader implements Reader {
 		filename = s; 
 	}
 
-	@Override
-	public List<ParkingViolation> readFile() {
-		List<ParkingViolation> parkingViolations = new ArrayList<ParkingViolation>(); 
+	public Map<Integer, ParkingViolation[]> readFile() {
+		HashMap<Integer, ParkingViolation> parkingViolations = new HashMap<>(); 
 		Scanner in =null; 
 		try {
 			in = new Scanner(new File(filename));
@@ -24,15 +24,18 @@ public class ParkingCSVReader implements Reader {
 				String vehicleID = lineItems[3];
 				String vehicleState = lineItems[4];
 				String violationID = lineItems[5];
-				String violationZip = null; 
+				int violationZip; 
 				
 				if (lineItems.length == 7) {
-					violationZip = lineItems[6];
+					violationZip = Integer.parseInt(lineItems[6]);
 				}
-				parkingViolations.add(new ParkingViolation(
-						date,fine, description, vehicleID, vehicleState, violationID, violationZip, violationZip));
-				}
+				
+				if parkingViolations.containsKey(violationZip)
+				parkingViolations.add(new ParkingViolation(date, fine, description,
+						vehicleID, vehicleState, violationID, violationZip));
+				
 			}
+		}
 			catch (Exception e) {
 				throw new IllegalStateException(e);
 			}
@@ -41,15 +44,18 @@ public class ParkingCSVReader implements Reader {
 			}
 			return parkingViolations;
 		}
+
 	
 	public static void main(String[] args) {
-		List<ParkingViolation> test; 
+		Map<Integer, Violation[]> test; 
 		Reader r = new ParkingCSVReader("parking.csv"); 
 		test = r.readFile(); 
 		
 		for (ParkingViolation p : test) {
 			System.out.println(p.getDescription());
-		}
+
+
+}
 	}
-w}
+	}
 

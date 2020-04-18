@@ -11,5 +11,5 @@ import java.util.*;
 
 public interface Reader {
 
-	public Map<Integer, Violation> readFile(String filename);
+	public Map<Integer, ParkingViolation[]> readFile();
 }

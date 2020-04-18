@@ -9,8 +9,8 @@ public class ParkingViolation {
 	private String violationID;
 	private int violationZip;
 	
-	ParkingViolation(String timestamp, double fine, String description, String vehicleID, String vehcileState,
-			String violationID, String violationZip, String vehicleState){
+	ParkingViolation(String timestamp, double fine, String description, String vehicleID, String vehicleState,
+			String violationID, int violationZip){
 		this.timestamp = timestamp;
 		this.fine = fine;
 		this.description = description;
@@ -44,7 +44,7 @@ public class ParkingViolation {
 		return violationID;
 	}
 
-	public String getViolationZip() {
+	public int getViolationZip() {
 		return violationZip;
 	}
 	
