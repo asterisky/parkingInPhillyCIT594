@@ -9,7 +9,7 @@ public class ParkingCSVReader implements Reader {
 	}
 
 	@Override
-	public List<ParkingViolation> readData() {
+	public List<ParkingViolation> readFile() {
 		List<ParkingViolation> parkingViolations = new ArrayList<ParkingViolation>(); 
 		Scanner in =null; 
 		try {
@@ -45,15 +45,11 @@ public class ParkingCSVReader implements Reader {
 	public static void main(String[] args) {
 		List<ParkingViolation> test; 
 		Reader r = new ParkingCSVReader("parking.csv"); 
-		test = r.readData(); 
+		test = r.readFile(); 
 		
 		for (ParkingViolation p : test) {
 			System.out.println(p.getDescription());
 		}
 	}
-	}
-
-
-//hello test 2
-
+w}
 
