@@ -18,8 +18,8 @@ public abstract class Processor {
 		r = makeReader();
 	}
 
-	public Map<Integer, List<ParkingViolation>> readFile(String filename) {
-		Map<Integer, List<ParkingViolation>> m = r.readFile();
+	public Map<Integer, List<Object>> readFile(String filename){
+		Map<Integer, List<Object>> m = r.read();
 		return m;
 	}
 
