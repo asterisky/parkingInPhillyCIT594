@@ -13,14 +13,16 @@ public class PropertyReaderCSV {
 	public HashMap<Integer, List<Property>> readFile(){
 		HashMap<Integer,List<Property>> properties = new HashMap<>();
 		Scanner in = null;
+		//read in properties 
 		try {
 			in = new Scanner(new File(filename));
 			String[] headers = in.nextLine().split(",");
 			in.nextLine();
+			//index column location of relevant values 
 			int indexOfArea = 0;
 			int indexOfValue = 0;
 			int indexOfZip =0;
-			
+			//get the index via a loop
 			for (int i =0; i<headers.length-1; i++) {
 				String s = headers[i];
 				if (s.contentEquals("total_livable_area")) {
@@ -33,19 +35,21 @@ public class PropertyReaderCSV {
 					indexOfValue =i;
 				}
 			}
-			
+			//split lines on commas except commas in quotes 
 			while (in.hasNextLine()) {
 				String line = in.nextLine();
 				String[] lineItems = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
 				double area = Double.parseDouble(lineItems[indexOfArea]);
 				double value = Double.parseDouble(lineItems[indexOfValue]);
 				String zipCodeUnclean = lineItems[indexOfZip];
+				// trim zip down to 5 length
 				if (zipCodeUnclean.length() > 5) {
 					zipCodeUnclean = zipCodeUnclean.substring(0,5);
 				}
 				
 				int zip = Integer.parseInt(zipCodeUnclean);
 				
+				//create a new array if the key zip value is not present otherwise get the ArrayList stored and add new Property
 				Property myProperty =  new Property(value, area, zip);
 				
 				if (properties.containsKey(zip)) 
@@ -70,7 +74,7 @@ public class PropertyReaderCSV {
 				in.close();
 			}
 	}
-	
+	//testing if it works 
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
 		HashMap<Integer, List<Property>> test = reader.readFile();
