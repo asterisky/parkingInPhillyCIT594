@@ -23,23 +23,29 @@ public class PopulationReaderWStxt implements Reader {
 	@Override
 	public Map<Integer, List<Object>> read() {
 		HashMap<Integer, List<Object>> population = new HashMap<>();
-		List<Object> popList = new ArrayList<>();
 
-		// import the text, read by line, parse by comma
+		// import the text, read by line, parse by whitespace
 		File file = new File(filename);
 		Scanner s; // scanner needed to look at the file
 
 		try {
 			s = new Scanner(file);
 			while (s.hasNextLine()) { // keep looking for another line in the file
-				// parse state components
-				// get line and split by comma
+				// parse file components
+				// get line and split by any amount of whitespace
 				String[] splLine = s.nextLine().split("\\s+");
-				Integer zip = Integer.valueOf(splLine[0]);
-				Integer pop = Integer.valueOf(splLine[1]);
-				popList.add(pop);
-				if (!population.containsKey(zip)) {
-					population.put(zip, popList);
+				if (splLine[0] != null && splLine[1] != null) {
+					List<Object> popList = new ArrayList<>(); // each list must be unique or they will all append to the
+																// same list
+
+					//split creates a string array so I separate these and finalize them
+					Integer zip = Integer.valueOf(splLine[0]);
+					Integer pop = Integer.valueOf(splLine[1]);
+					popList.add(pop);
+					//sanity check - each zip code should be unique!
+					if (!population.containsKey(zip)) {
+						population.put(zip, popList);
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -50,4 +56,5 @@ public class PopulationReaderWStxt implements Reader {
 		}
 		return population;
 	}
+
 }
