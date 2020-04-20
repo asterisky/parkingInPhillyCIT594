@@ -20,6 +20,7 @@ public class PropertyReaderCSV {
 			int indexOfArea = 0;
 			int indexOfValue = 0;
 			int indexOfZip =0;
+			
 			for (int i =0; i<headers.length-1; i++) {
 				String s = headers[i];
 				if (s.contentEquals("total_livable_area")) {
@@ -75,7 +76,7 @@ public class PropertyReaderCSV {
 		HashMap<Integer, List<Property>> test = reader.readFile();
 		for (int i : test.keySet()) {
 			for (Property p : test.get(i)) {
-				System.out.println(p.getMarketValue());
+				System.out.println(p.getZipCode());
 			}
 		}
 		
