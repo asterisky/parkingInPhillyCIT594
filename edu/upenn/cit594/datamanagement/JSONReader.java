@@ -3,10 +3,8 @@
  */
 package edu.upenn.cit594.datamanagement;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
-import java.time.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,10 +18,15 @@ import org.json.simple.parser.ParseException;
  *
  */
 public class JSONReader implements Reader {
+	protected String filename;
+
+	public JSONReader(String file) {
+		this.filename = file;
+	}
 
 	@Override
-	public Map<Integer, Violation> readFile(String filename){
-		Map<Integer, Violation> parkingViolations = new HashMap<>();
+	public Map<Integer, List<Object>> read() {
+		Map<Integer, List<Object>> parkingViolations = new HashMap<>();
 
 		try {
 			// create helper objects to parse the JSON
@@ -36,53 +39,56 @@ public class JSONReader implements Reader {
 
 				// get data from object into string
 				JSONObject rowData = (JSONObject) iter.next();
-				
-				String dateStringToParse = rowData.get("date").toString();
-				LocalDateTime date = LocalDateTime.parse(dateStringToParse);
-				int fine = (int) rowData.get("fine");
-				String violation = rowData.get("violation").toString();
-				int vehicleID = (int) rowData.get("vehicle ID");
-				String state = rowData.get("state").toString();
-				int ticketID = (int) rowData.get("ticket number");
-				int zip = (int) rowData.get("zipcode");
 
-				// create Violation object with row data
-				Violation v = new Violation(date, fine, violation, vehicleID, state, ticketID, zip);
-				parkingViolations.put(vehicleID, v);
+				if (rowData.get("fine").toString() != null && rowData.get("fine").toString().equals("") != true
+						&& rowData.get("zip_code").toString() != null
+						&& rowData.get("zip_code").toString().equals("") != true) {
+					String date = rowData.get("date").toString();
+					double fine = Double.parseDouble(rowData.get("fine").toString());
+					String violation = rowData.get("violation").toString();
+					String vehicleID = rowData.get("plate_id").toString();
+					String state = rowData.get("state").toString();
+					String ticketID = rowData.get("ticket_number").toString();
+					int zip = Integer.valueOf(rowData.get("zip_code").toString());
+
+					if (date != null && violation != null && vehicleID != null && state != null && ticketID != null
+							&& zip > 9999) {
+
+						// create ParkingViolation object
+						ParkingViolation pv = new ParkingViolation(date, fine, violation, vehicleID, state, ticketID,
+								zip);
+
+						// if the zipcode is already in the Map, append a new Parking Violation
+						if (parkingViolations.containsKey(zip)) {
+							parkingViolations.get(zip).add(pv);
+						}
+						// if this is a new zipcode, start a new list
+						else {
+							ArrayList<Object> listOfPV = new ArrayList<>();
+							listOfPV.add(pv);
+
+							parkingViolations.put(zip, listOfPV);
+						}
+					}
+				}
 			}
-			//comment
 		} catch (ParseException | IOException e) {
-			System.out.println(
-					"Error reading JSON file.");
+			System.out.println("Error reading JSON file.");
 
 			e.printStackTrace();
 		}
 
 		return parkingViolations;
-	public Set<String> readFile(String filename) {
-		Set<String> parsedData = new HashSet<String>();
+	}
 
-		try {
-			// create helper objects to parse JSON file
-			JSONParser parser = new JSONParser();
-			JSONArray dataArray = (JSONArray) parser.parse(new FileReader(filename));
-			Iterator iter = dataArray.iterator();
-
-			// iterate through the JSON object lines to get the desired data into the Set
-			while (iter.hasNext()) {
-
-				// get data from object into string
-				JSONObject data = (JSONObject) iter.next();
-
-				int fine = (int) data.get("fine");
-
-			}
-
-		} catch (ParseException | IOException e) {
-			System.out.println("Data file could not be read successfully.");
-			e.printStackTrace();
+	public static void main(String[] args) {
+		Reader r = new JSONReader("parking.json");
+		Map<Integer, List<Object>> testmap = new HashMap<>();
+		testmap = r.read();
+		for (Integer i : testmap.keySet()) {
+			List<Object> violations = new ArrayList<>();
+			violations.addAll(testmap.get(i));
+			System.out.println(i + " num of violations is " + violations.size());
 		}
-		
-		return parsedData;
 	}
 }
