@@ -39,7 +39,8 @@ public class JSONReader implements Reader {
 
 				// get data from object into string
 				JSONObject rowData = (JSONObject) iter.next();
-
+				
+				//cannot parse null data into double or int
 				if (rowData.get("fine").toString() != null && rowData.get("fine").toString().equals("") != true
 						&& rowData.get("zip_code").toString() != null
 						&& rowData.get("zip_code").toString().equals("") != true) {
@@ -51,6 +52,7 @@ public class JSONReader implements Reader {
 					String ticketID = rowData.get("ticket_number").toString();
 					int zip = Integer.valueOf(rowData.get("zip_code").toString());
 
+					//we want to discard rows with missing data
 					if (date != null && violation != null && vehicleID != null && state != null && ticketID != null
 							&& zip > 9999) {
 
@@ -81,14 +83,4 @@ public class JSONReader implements Reader {
 		return parkingViolations;
 	}
 
-	public static void main(String[] args) {
-		Reader r = new JSONReader("parking.json");
-		Map<Integer, List<Object>> testmap = new HashMap<>();
-		testmap = r.read();
-		for (Integer i : testmap.keySet()) {
-			List<Object> violations = new ArrayList<>();
-			violations.addAll(testmap.get(i));
-			System.out.println(i + " num of violations is " + violations.size());
-		}
-	}
 }

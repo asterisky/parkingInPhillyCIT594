@@ -9,9 +9,13 @@ package edu.upenn.cit594.datamanagement;
  */
 public class WStxtProcessor extends Processor{
 
+	public WStxtProcessor(String filename) {
+		super(filename);
+	}
+
 	@Override
-	protected Reader makeReader() {
-		Reader r = new PopulationReaderWStxt();
+	protected Reader makeReader(String filename) {
+		Reader r = new PopulationReaderWStxt(filename);
 		return r;
 	}
 

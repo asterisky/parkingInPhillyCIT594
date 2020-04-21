@@ -14,14 +14,14 @@ public abstract class Processor {
 
 	protected Reader r;
 
-	public Processor() {
-		r = makeReader();
+	public Processor(String filename) {
+		r = makeReader(filename);
 	}
 
-	public Map<Integer, List<Object>> readFile(String filename){
+	public Map<Integer, List<Object>> readFile(){
 		Map<Integer, List<Object>> m = r.read();
 		return m;
 	}
 
-	protected abstract Reader makeReader();
+	protected abstract Reader makeReader(String filename);
 }
