@@ -81,7 +81,7 @@ public class PropertyReaderCSV {
 		for (int i : test.keySet()) {
 			for (Object  o : test.get(i)) {
 				Property p = (Property) o;
-				System.out.println(p.getZipCode());
+				System.out.println(p.getZipCode()+":"+p.getMarketValue()+":"+p.getLivableArea());
 			}
 		}
 		
