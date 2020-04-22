@@ -10,8 +10,8 @@ public class PropertyReaderCSV {
 		filename = file;
 	}
 	
-	public HashMap<Integer, List<Property>> readFile(){
-		HashMap<Integer,List<Property>> properties = new HashMap<>();
+	public HashMap<Integer, List<Object>> readFile(){
+		HashMap<Integer,List<Object>> properties = new HashMap<>();
 		Scanner in = null;
 		//read in properties 
 		try {
@@ -58,7 +58,7 @@ public class PropertyReaderCSV {
 				}
 				else 
 				{
-					ArrayList<Property> propertyList = new ArrayList<>();
+					ArrayList<Object> propertyList = new ArrayList<>();
 					propertyList.add(myProperty);
 					properties.put(zip, propertyList);
 				}
@@ -77,9 +77,10 @@ public class PropertyReaderCSV {
 	//testing if it works 
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
-		HashMap<Integer, List<Property>> test = reader.readFile();
+		HashMap<Integer, List<Object>> test = reader.readFile();
 		for (int i : test.keySet()) {
-			for (Property p : test.get(i)) {
+			for (Object  o : test.get(i)) {
+				Property p = (Property) o;
 				System.out.println(p.getZipCode());
 			}
 		}
