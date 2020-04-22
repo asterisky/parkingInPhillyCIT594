@@ -6,6 +6,10 @@ import java.util.*;
 
 public class PropertyProcessor {
 	private HashMap<Integer,List<Object>> data;
+	//for memoization 2 hashsets storing the values for the zipcode
+	private HashMap<Integer, Double> avgValueResults = new HashMap<>();
+	private HashMap<Integer, Double> avgLivableAreaResults = new HashMap<>(); 
+	
 	
 	PropertyProcessor(HashMap<Integer,List<Object>> data){
 		this.data =data;
@@ -13,15 +17,29 @@ public class PropertyProcessor {
 	}
 	
 	//Uses Strategy method to get the average value on the stored dataset, it will either use the valueAverager or LivableArea 
-	//Averager which both implement DataAverager 
+	//Averager which both implement DataAverager & uses memoization to store values in a HashMap for a zipCode
 	
 	public double averageValue(int zipCode){
-		
-		return getAverage(data, zipCode, new ValueAverager());
-		
+		if (avgValueResults.containsKey(zipCode)) {
+			return avgValueResults.get(zipCode);
+		}
+		else {
+			double result = getAverage(data, zipCode, new ValueAverager());
+			avgValueResults.put(zipCode, result);
+			return result;
+		}
 	}
+	
+	
 	public double averageLivableArea(int zipCode) {
-		return getAverage(data, zipCode, new LivableAreaAverager());
+		if (avgLivableAreaResults.containsKey(zipCode)) {
+			return avgLivableAreaResults.get(zipCode);
+		}
+		else {
+			double result = getAverage(data, zipCode, new LivableAreaAverager());
+			avgLivableAreaResults.put(zipCode, result);
+			return result;
+		}
 	}
 	
 	
@@ -34,12 +52,15 @@ public class PropertyProcessor {
 		}
 		return average/values.size();
 	}
+	
+	
 	//testing to see if it works
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
 		HashMap<Integer, List<Object>> test = reader.readFile();
 		PropertyProcessor pp = new PropertyProcessor(test); 
-		System.out.println(pp.averageLivableArea(19147));
+		System.out.println(pp.averageValue(19147));
+		System.out.println(pp.averageValue(19148));
 	}
 
 }
