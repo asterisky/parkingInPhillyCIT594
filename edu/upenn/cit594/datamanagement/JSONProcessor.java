@@ -9,9 +9,13 @@ package edu.upenn.cit594.datamanagement;
  */
 public class JSONProcessor extends Processor {
 
+	public JSONProcessor(String filename) {
+		super(filename);
+	}
+
 	@Override
-	protected Reader makeReader() {
-		Reader r = new JSONReader();
+	protected Reader makeReader(String filename) {
+		Reader r = new JSONReader(filename);
 		return r;
 	}
 }

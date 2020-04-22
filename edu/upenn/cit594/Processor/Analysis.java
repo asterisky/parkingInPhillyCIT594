@@ -13,7 +13,8 @@ import java.util.*;
  */
 public class Analysis {
 
-	protected HashMap<HashMap<Integer, List<Object>>, Integer> memoization;
+	protected HashMap<HashMap<Integer, List<Object>>, Integer> memoizationTotalPop;
+	protected HashMap<HashMap<Integer, List<Object>>, Map<Integer, Double>> memoizationFinesPerCapita;
 
 	/*
 	 * Sums populations for all zip codes.
@@ -25,8 +26,8 @@ public class Analysis {
 			return totalPop;
 		}
 
-		if (memoization.containsKey(popList)) {
-			return memoization.get(popList);
+		if (memoizationTotalPop != null && memoizationTotalPop.containsKey(popList)) {
+			return memoizationTotalPop.get(popList);
 		}
 
 		// get population of each zip code and update counters
@@ -34,23 +35,41 @@ public class Analysis {
 			int[] localPop = getAsInteger(popList.get(p));
 			totalPop += localPop[0];
 		}
-		memoization.put(popList, totalPop);
+		memoizationTotalPop.put(popList, totalPop);
 		return (totalPop);
 	}
 
-	public Set<double[]> totalFinesPerCapita(HashMap<Integer, List<Object>> parkingViolations,
+	/*
+	 * Returns a treemap (sorted) of zip codes (key) and total fines per capita
+	 */
+	public Map<Integer, Double> totalFinesPerCapita(HashMap<Integer, List<Object>> parkingViolations,
 			HashMap<Integer, List<Object>> populations) {
-		Set<double[]> perCapita = new TreeSet<>();
-
-		for (Integer z : populations.keySet()) {
-
-			double finesInZip = totalFinesForZip(z, populations.get(z));
-
+		TreeMap<Integer, Double> perCapita = new TreeMap<>();
+		// error checking and memoization
+		if (parkingViolations == null || populations == null) {
+			return perCapita;
 		}
-	}
+		if (memoizationFinesPerCapita != null && memoizationFinesPerCapita.containsKey(populations)) {
+			return memoizationFinesPerCapita.get(populations);
+		}
 
-	return perCapita;
-
+		// iterate through each zip code in the populations data set
+		for (Integer z : populations.keySet()) {
+			List<Object> violations = parkingViolations.get(z);
+			int[] population = getAsInteger(populations.get(z));
+			// Population, num of violations, and fines per capita should be > 0
+			if (population != null && violations != null && population[0] > 0 && violations.size() > 0) {
+				Double finesInZip = totalFinesForZip(violations, population[0]);
+				if (finesInZip > 0) {
+					perCapita.put(z, finesInZip);
+				}
+			}
+		}
+		/**
+		 * MEMOIZATION IS NOT WORKING AND I DON'T KNOW WHY :D
+		 **/
+//		memoizationFinesPerCapita.put(populations, perCapita);
+		return perCapita;
 	}
 
 	/*
@@ -83,4 +102,19 @@ public class Analysis {
 		}
 		return listOfInts;
 	}
+
+//	for testing methods:
+//	public static void main(String[] args) {
+//		Analysis a = new Analysis();
+//		Processor pop = new WStxtProcessor("/Users/quetzalcoatl/Downloads/population.txt");
+//		Processor vio = new JSONProcessor("/Users/quetzalcoatl/Downloads/parking.json");
+//		HashMap<Integer, List<Object>> population = (HashMap<Integer, List<Object>>) pop.readFile();
+//		HashMap<Integer, List<Object>> violations = (HashMap<Integer, List<Object>>) vio.readFile();
+//
+//		Map<Integer, Double> finesPerCap = a.totalFinesPerCapita(violations, population);
+//
+//		for (Integer e : finesPerCap.keySet()) {
+//			System.out.println(e + "\t" + finesPerCap.get(e));
+//		}
+//	}
 }
