@@ -31,13 +31,8 @@ public class Analysis {
 
 		// get population of each zip code and update counters
 		for (Integer p : popList.keySet()) {
-			List<Object> localPop = new ArrayList<>();
-			localPop.add(popList.get(p));
-			String e = localPop.get(0).toString();
-			e = e.replaceAll("\\[|\\]", "");
-			Integer element = Integer.valueOf(e);
-
-			totalPop += element;
+			int[] localPop = getAsInteger(popList.get(p));
+			totalPop += localPop[0];
 		}
 		memoization.put(popList, totalPop);
 		return (totalPop);
@@ -46,12 +41,16 @@ public class Analysis {
 	public Set<double[]> totalFinesPerCapita(HashMap<Integer, List<Object>> parkingViolations,
 			HashMap<Integer, List<Object>> populations) {
 		Set<double[]> perCapita = new TreeSet<>();
-		
-		for(Integer z : populations.keySet()) {
+
+		for (Integer z : populations.keySet()) {
+
 			double finesInZip = totalFinesForZip(z, populations.get(z));
+
 		}
-		
-		return perCapita;
+	}
+
+	return perCapita;
+
 	}
 
 	/*
@@ -67,5 +66,21 @@ public class Analysis {
 			}
 		}
 		return (sumFines / population);
+	}
+
+	/*
+	 * helper method to parse objects as integer array
+	 */
+	private int[] getAsInteger(List<Object> list) {
+		int[] listOfInts = new int[list.size()];
+		int i = 0;
+		for (Object o : list) {
+			String str = o.toString();
+			str = str.replaceAll("\\[|\\]", "");
+			Integer element = Integer.valueOf(str);
+			listOfInts[i] = element;
+			i++;
+		}
+		return listOfInts;
 	}
 }
