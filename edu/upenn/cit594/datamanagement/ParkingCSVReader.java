@@ -9,8 +9,8 @@ public class ParkingCSVReader implements Reader {
 		filename = s; 
 	}
 
-	public Map<Integer, List<ParkingViolation>> readFile() {
-		HashMap<Integer, List<ParkingViolation>> parkingViolations = new HashMap<>(); 
+	public Map<Integer, List<Object>> read() {
+		Map<Integer, List<Object>> parkingViolations = new HashMap<>(); 
 		Scanner in =null; 
 		try {
 			in = new Scanner(new File(filename));
@@ -40,7 +40,7 @@ public class ParkingCSVReader implements Reader {
 					//and list as its value
 					else 
 					{
-						ArrayList<ParkingViolation> myList = new ArrayList<>();
+						List<Object> myList = new ArrayList<>();
 						myList.add(new ParkingViolation(date, fine, description, vehicleID, 
 								vehicleState, violationID, violationZip));
 						
@@ -61,12 +61,12 @@ public class ParkingCSVReader implements Reader {
 
 	
 	public static void main(String[] args) {
-		Map<Integer, List<ParkingViolation>> test; 
+		Map<Integer, List<Object>> test; 
 		Reader r = new ParkingCSVReader("parking.csv"); 
-		test = r.readFile(); 
+		test = r.read(); 
 		
 		for (int i : test.keySet()) {
-			List<ParkingViolation> p = test.get(i); 
+			List<Object> p = test.get(i); 
 			System.out.println(i +" : "+ p.size());
 
 
