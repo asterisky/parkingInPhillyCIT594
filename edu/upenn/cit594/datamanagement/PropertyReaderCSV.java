@@ -6,7 +6,7 @@ import java.util.*;
 public class PropertyReaderCSV {
 	String filename; 
 	
-	PropertyReaderCSV(String file){
+	public PropertyReaderCSV(String file){
 		filename = file;
 	}
 	

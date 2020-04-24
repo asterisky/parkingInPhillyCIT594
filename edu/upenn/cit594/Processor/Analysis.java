@@ -13,8 +13,9 @@ import java.util.*;
  */
 public class Analysis {
 
-	protected HashMap<HashMap<Integer, List<Object>>, Integer> memoizationTotalPop;
-	protected HashMap<HashMap<Integer, List<Object>>, Map<Integer, Double>> memoizationFinesPerCapita;
+	protected HashMap<HashMap<Integer, List<Object>>, Integer> memoizationTotalPop = new HashMap<>();
+	protected HashMap<HashMap<Integer, List<Object>>, Map<Integer, Double>> memoizationFinesPerCapita = new HashMap<>();
+	protected HashMap<Integer, Double> memoizationMarketValPerCapita = new HashMap();
 
 	/*
 	 * Sums populations for all zip codes.
@@ -35,6 +36,7 @@ public class Analysis {
 			int[] localPop = getAsInteger(popList.get(p));
 			totalPop += localPop[0];
 		}
+		
 		memoizationTotalPop.put(popList, totalPop);
 		return (totalPop);
 	}
@@ -65,10 +67,8 @@ public class Analysis {
 				}
 			}
 		}
-		/**
-		 * MEMOIZATION IS NOT WORKING AND I DON'T KNOW WHY :D
-		 **/
-//		memoizationFinesPerCapita.put(populations, perCapita);
+
+		memoizationFinesPerCapita.put(populations, perCapita);
 		return perCapita;
 	}
 
@@ -85,6 +85,47 @@ public class Analysis {
 			}
 		}
 		return (sumFines / population);
+	}
+	
+	/*
+	 * finds total fines per capita for a SINGLE zip code
+	 */
+	public double totalMarketValForZip(Integer zip, HashMap<Integer, List<Object>> properties, HashMap<Integer, List<Object>> populations) {
+		if(memoizationMarketValPerCapita.containsKey(zip)) {
+			return memoizationMarketValPerCapita.get(zip);
+		}
+		
+		//just error checking first
+		if(zip == null || properties == null || populations == null || zip < 9999 || zip > 99999 || properties.containsKey(zip) == false || populations.containsKey(zip) == false ) {
+			memoizationMarketValPerCapita.put(zip, 0.0);
+			return 0.0;
+		}
+		
+		//setting up variables to hold values
+		double totalValue = 0.0;
+		List<Object> propsInZip = properties.get(zip);
+		List<Object> popInZip = populations.get(zip);
+		int[] population = getAsInteger(popInZip);
+		//quick error check for population size
+		if(population[0] <= 0) {
+			memoizationMarketValPerCapita.put(zip, 0.0);
+			return 0.0;
+		}
+		
+		//sum property values in that zipcode
+		for (Object o : propsInZip) {
+			Property p = (Property) o;
+			double propertyValue = p.getMarketValue();
+			totalValue += propertyValue;
+		}
+		//error check for property value number
+		if(totalValue <= 0) {
+			memoizationMarketValPerCapita.put(zip, 0.0);
+			return 0.0;
+		}
+		
+		memoizationMarketValPerCapita.put(zip, (totalValue / population[0]));
+		return (totalValue / population[0]);
 	}
 
 	/*
@@ -108,11 +149,15 @@ public class Analysis {
 //		Analysis a = new Analysis();
 //		Processor pop = new WStxtProcessor("/Users/quetzalcoatl/Downloads/population.txt");
 //		Processor vio = new JSONProcessor("/Users/quetzalcoatl/Downloads/parking.json");
+//		PropertyReaderCSV houses = new PropertyReaderCSV("/Users/quetzalcoatl/eclipse/MCIT/594/parkingInPhillyCIT594/PropertiesSmall.csv");
 //		HashMap<Integer, List<Object>> population = (HashMap<Integer, List<Object>>) pop.readFile();
 //		HashMap<Integer, List<Object>> violations = (HashMap<Integer, List<Object>>) vio.readFile();
+//		HashMap<Integer, List<Object>> properties = (HashMap<Integer, List<Object>>) houses.readFile();
 //
 //		Map<Integer, Double> finesPerCap = a.totalFinesPerCapita(violations, population);
-//
+//		int totalPop = a.totalPopulationByZip(population);
+//		
+//		
 //		for (Integer e : finesPerCap.keySet()) {
 //			System.out.println(e + "\t" + finesPerCap.get(e));
 //		}
