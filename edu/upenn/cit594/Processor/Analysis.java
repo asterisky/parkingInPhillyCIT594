@@ -15,7 +15,7 @@ public class Analysis {
 
 	protected HashMap<HashMap<Integer, List<Object>>, Integer> memoizationTotalPop = new HashMap<>();
 	protected HashMap<HashMap<Integer, List<Object>>, Map<Integer, Double>> memoizationFinesPerCapita = new HashMap<>();
-	protected HashMap<Integer, Double> memoizationMarketValPerCapita = new HashMap();
+	protected HashMap<Integer, Double> memoizationMarketValPerCapita = new HashMap<>();
 
 	/*
 	 * Sums populations for all zip codes.
