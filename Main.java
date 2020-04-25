@@ -1,3 +1,6 @@
+import edu.upenn.cit594.datamanagement.Processor;
+import edu.upenn.cit594.datamanagement.Reader;
+import edu.upenn.cit594.datamanagement.UserInterface;
 
 public class Main {
 	public static void main(String[] args) {
@@ -12,6 +15,8 @@ public class Main {
 			System.exit(0);
 		}
 		
+	
+		
 		//implement if file is unreadable*****
 		//CODE HERE
 		
@@ -21,6 +26,10 @@ public class Main {
 		String propertyValuesFile = args [2];
 		String populationFile = args[3];
 		String logFileName = args[4];
+		
+		//How do i read in the file processor or reader class?
+		UserInterface ui = new UserInterface(null);
+		
 		
 		//Fill in all the items*****
 		//CODE HERE

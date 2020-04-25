@@ -57,7 +57,7 @@ public class PropertyProcessor {
 	//testing to see if it works
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
-		HashMap<Integer, List<Object>> test = reader.readFile();
+		HashMap<Integer, List<Object>> test = (HashMap<Integer, List<Object>>) reader.read();
 		PropertyProcessor pp = new PropertyProcessor(test); 
 		System.out.println(pp.averageValue(19147));
 		System.out.println(pp.averageValue(19148));

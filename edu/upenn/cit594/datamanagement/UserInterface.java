@@ -71,7 +71,7 @@ public class UserInterface {
 	
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
-		HashMap<Integer, List<Object>> test = reader.readFile();
+		HashMap<Integer, List<Object>> test = (HashMap<Integer, List<Object>>) reader.read();
 		UserInterface ui = new UserInterface(test);
 		ui.run();
 		
