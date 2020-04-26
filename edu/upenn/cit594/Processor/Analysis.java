@@ -16,6 +16,8 @@ public class Analysis {
 	protected HashMap<HashMap<Integer, List<Object>>, Integer> memoizationTotalPop = new HashMap<>();
 	protected HashMap<HashMap<Integer, List<Object>>, Map<Integer, Double>> memoizationFinesPerCapita = new HashMap<>();
 	protected HashMap<Integer, Double> memoizationMarketValPerCapita = new HashMap<>();
+	protected HashMap<Integer, Double> avgValueResults = new HashMap<>();
+	protected HashMap<Integer, Double> avgLivableAreaResults = new HashMap<>(); 
 
 	/*
 	 * Sums populations for all zip codes.
@@ -143,6 +145,43 @@ public class Analysis {
 		}
 		return listOfInts;
 	}
+	
+	//Uses Strategy method to get the average value on the stored dataset, it will either use the valueAverager or LivableArea 
+		//Averager which both implement DataAverager & uses memoization to store values in a HashMap for a zipCode
+		
+		public double averageValue(Map<Integer, List<Object>> propertyData, int zipCode){
+			if (avgValueResults.containsKey(zipCode)) {
+				return avgValueResults.get(zipCode);
+			}
+			else {
+				double result = getAverage(propertyData, zipCode, new ValueAverager());
+				avgValueResults.put(zipCode, result);
+				return result;
+			}
+		}
+		
+		public double averageLivableArea(Map<Integer, List<Object>> propertyData, int zipCode) {
+			if (avgLivableAreaResults.containsKey(zipCode)) {
+				return avgLivableAreaResults.get(zipCode);
+			}
+			else {
+				double result = getAverage(propertyData, zipCode, new LivableAreaAverager());
+				avgLivableAreaResults.put(zipCode, result);
+				return result;
+			}
+		}
+		
+		
+		//this is the helper method that will use the interface DataAverager to create the appropriate averager
+		private double getAverage(Map<Integer, List<Object>> propertyData, int zipCode, DataAverager da) {
+			List<Double> values = da.average(propertyData, zipCode);
+			double average =0;
+			for (Double d : values) {
+				average += d;
+			}
+			return average/values.size();
+		}
+
 
 //	for testing methods:
 //	public static void main(String[] args) {

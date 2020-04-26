@@ -2,14 +2,21 @@ package edu.upenn.cit594.datamanagement;
 
 import java.util.*;
 
+import edu.upenn.cit594.Processor.Analysis;
+
 public class UserInterface {
-	PropertyProcessor pp;
-	// Analysis class only ----
+	Map<Integer, List<Object>> parkingData, populationData,propertyData;
+	Analysis a;
 	Scanner s = new Scanner(System.in); 
 	
-	public UserInterface(HashMap<Integer, List<Object>> propertyData){
-		pp = new PropertyProcessor(propertyData);
-		//other datasets here
+	public UserInterface(Map<Integer, List<Object>> parkingData, Map<Integer, List<Object>> populationData , 
+			Map<Integer, List<Object>> propertyData){
+		this.propertyData = propertyData;
+		this.populationData = populationData;
+		this.parkingData = parkingData;
+		a = new Analysis();
+		
+		
 	}
 		
 		public void run() {
@@ -22,6 +29,7 @@ public class UserInterface {
 			}
 			//if spaces or multiple numbers
 			String userInput = s.nextLine();
+			System.out.println(userInput);
 			if (userInput.length() != 1) {
 				System.out.println("Invalid integer format, please enter an intger from 0-6");
 				System.exit(0);
@@ -44,12 +52,12 @@ public class UserInterface {
 				if (input==3){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					System.out.println(pp.averageValue(inputZip)); 
+					System.out.println(a.averageValue(propertyData, inputZip)); 
 				}
 				if (input==4){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					System.out.println(pp.averageLivableArea(inputZip)); 
+					System.out.println(a.averageLivableArea(propertyData, inputZip)); 
 				}
 				if (input==5){
 					//Katie method
@@ -69,13 +77,5 @@ public class UserInterface {
 					+ "5: Total Residential Market Value per Capita for a Specific Zip Code \n"
 					+ "6: Custom question"); // UPDATE THE QUESTION
 		}
-	
-	public static void main(String[] args) {
-		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
-		HashMap<Integer, List<Object>> test = (HashMap<Integer, List<Object>>) reader.read();
-		UserInterface ui = new UserInterface(test);
-		ui.run();
-		
-	}
 
 }
