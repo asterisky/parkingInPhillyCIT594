@@ -11,5 +11,5 @@ import java.util.*;
 
 public interface Reader {
 
-	public Map<Integer, List<Object>> read();
+	public HashMap<Integer, List<Object>> read();
 }
