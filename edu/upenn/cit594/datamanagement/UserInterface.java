@@ -57,7 +57,12 @@ public class UserInterface {
 					//Katie method
 				}
 				if (input==2){
-					//Katie method
+					TreeMap<Integer, Double> outputMap = (TreeMap<Integer, Double>) a.totalFinesPerCapita(parkingData, populationData);
+					for (int i : outputMap.keySet()) {
+						double perCapita = outputMap.get(i);
+						String strPerCapita = String.format("%.2f", perCapita);
+						System.out.println(i+" "+strPerCapita);
+					}
 				}
 				if (input==3){
 					System.out.println("Enter Zip Code");
@@ -75,7 +80,7 @@ public class UserInterface {
 				if (input==6){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					double answer = a.averageFinesPerCapitaPerAveragePropertyValueRatio(propertyData, 
+					double answer = a.averagePropertyValuePerAverageFinesPerCapitaRatio(propertyData, 
 							(TreeMap<Integer, Double>) a.totalFinesPerCapita(parkingData, populationData), inputZip);
 					System.out.println(answer);
 				}

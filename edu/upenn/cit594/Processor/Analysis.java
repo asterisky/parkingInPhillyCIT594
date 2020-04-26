@@ -172,7 +172,7 @@ public class Analysis {
 			}
 		}
 		
-		public double averageFinesPerCapitaPerAveragePropertyValueRatio(HashMap<Integer, List<Object>> propertyData, 
+		public double averagePropertyValuePerAverageFinesPerCapitaRatio(HashMap<Integer, List<Object>> propertyData, 
 				TreeMap<Integer, Double> perCapita,int zipCode) {
 			if (customQuestion.containsKey(zipCode)) {
 				return customQuestion.get(zipCode);
@@ -180,7 +180,7 @@ public class Analysis {
 			else {
 				double finesPerCapita = perCapita.get(zipCode);	
 				double avgPropertyValue = averageValue(propertyData, zipCode);
-				double ratio = finesPerCapita/avgPropertyValue;
+				double ratio = avgPropertyValue/finesPerCapita;
 				customQuestion.put(zipCode, ratio);
 				return ratio;
 				
