@@ -1,5 +1,8 @@
 package edu.upenn.cit594.datamanagement;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.*;
 
 import edu.upenn.cit594.Processor.*;
@@ -12,11 +15,11 @@ public class UserInterface {
 	protected HashMap<Integer, List<Object>> parkingViolations;
 	protected HashMap<Integer, List<Object>> populations;
 
-	public UserInterface(HashMap<Integer, List<Object>> propertyData,
-			HashMap<Integer, List<Object>> parkingViolationData, HashMap<Integer, List<Object>> populationData) {
-		this.properties = propertyData;
-		this.parkingViolations = parkingViolationData;
-		this.populations = populationData;
+	public UserInterface(Map<Integer, List<Object>> propertyData,
+			Map<Integer, List<Object>> parkingViolationData, Map<Integer, List<Object>> populationData) {
+		this.properties = (HashMap<Integer, List<Object>>) propertyData;
+		this.parkingViolations = (HashMap<Integer, List<Object>>) parkingViolationData;
+		this.populations = (HashMap<Integer, List<Object>>) populationData;
 	}
 
 	public void run() {
@@ -46,17 +49,24 @@ public class UserInterface {
 					System.out.println(a.totalPopulationByZip(populations));
 				}
 				if (input==2){
-					//Katie method
+					Map<Integer, Double> finesPerCap = a.totalFinesPerCapita(parkingViolations, populations);
+					
+					for (Integer i : finesPerCap.keySet()) {
+						BigDecimal truncated = new BigDecimal(finesPerCap.get(i));
+						truncated = truncated.setScale(4, RoundingMode.FLOOR);
+
+						System.out.println(i + " " + truncated);
+					}
 				}
 				if (input==3){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					System.out.println(pp.averageValue(inputZip)); 
+//					System.out.println(pp.averageValue(inputZip)); 
 				}
 				if (input==4){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					System.out.println(pp.averageLivableArea(inputZip)); 
+//					System.out.println(pp.averageLivableArea(inputZip)); 
 				}
 				if (input==5){
 					//Katie method
@@ -79,8 +89,11 @@ public class UserInterface {
 
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
-		HashMap<Integer, List<Object>> test = (HashMap<Integer, List<Object>>) reader.read();
-		UserInterface ui = new UserInterface(test);
+		WStxtProcessor pop = new WStxtProcessor("/Users/quetzalcoatl/Downloads/population.txt");
+		CSVProcessor parking = new CSVProcessor("parking.csv");
+		HashMap<Integer, List<Object>> chek = new HashMap<>();
+		
+		UserInterface ui = new UserInterface(chek, parking.readFile(), pop.readFile());
 		ui.run();
 
 	}
