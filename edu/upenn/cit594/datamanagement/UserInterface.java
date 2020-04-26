@@ -3,7 +3,8 @@ package edu.upenn.cit594.datamanagement;
 import java.util.*;
 
 public class UserInterface {
-	PropertyProcessor pp;  
+	PropertyProcessor pp;
+	// Analysis class only ----
 	Scanner s = new Scanner(System.in); 
 	
 	public UserInterface(HashMap<Integer, List<Object>> propertyData){
