@@ -2,17 +2,24 @@ package edu.upenn.cit594.datamanagement;
 
 import java.util.*;
 
+import edu.upenn.cit594.Processor.*;
+
 public class UserInterface {
-	PropertyProcessor pp;
 	// Analysis class only ----
-	Scanner s = new Scanner(System.in); 
-	
-	public UserInterface(HashMap<Integer, List<Object>> propertyData){
-		pp = new PropertyProcessor(propertyData);
-		//other datasets here
+	protected Analysis a = new Analysis();
+	protected Scanner s = new Scanner(System.in);
+	protected HashMap<Integer, List<Object>> properties;
+	protected HashMap<Integer, List<Object>> parkingViolations;
+	protected HashMap<Integer, List<Object>> populations;
+
+	public UserInterface(HashMap<Integer, List<Object>> propertyData,
+			HashMap<Integer, List<Object>> parkingViolationData, HashMap<Integer, List<Object>> populationData) {
+		this.properties = propertyData;
+		this.parkingViolations = parkingViolationData;
+		this.populations = populationData;
 	}
-		
-		public void run() {
+
+	public void run() {
 			
 			displayMenu(); 
 			//if not a number
@@ -36,7 +43,7 @@ public class UserInterface {
 				}
 				
 				if (input==1){
-					//Katie method
+					System.out.println(a.totalPopulationByZip(populations));
 				}
 				if (input==2){
 					//Katie method
@@ -58,24 +65,24 @@ public class UserInterface {
 					//Aman method
 				}
 		}
-		
-		private void displayMenu() {
-			System.out.println("Select an option from 0 - 6");
-			System.out.println("0: Exits Program \n"
-					+ "1: Total Population for all Zip Codes \n"
-					+ "2: Total Fines per Capita for each Zip Code \n"
-					+ "3: Average Market Value of Residences for a Specific Zip Code \n"
-					+ "4: Average Total Livable Area of Residences for a Specific Zip Code \n"
-					+ "5: Total Residential Market Value per Capita for a Specific Zip Code \n"
-					+ "6: Custom question"); // UPDATE THE QUESTION
-		}
-	
+
+	private void displayMenu() {
+		System.out.println("Select an option from 0 - 6");
+		System.out.println("0: Exits Program \n" + "1: Total Population for all Zip Codes \n"
+				+ "2: Total Fines per Capita for each Zip Code \n"
+				+ "3: Average Market Value of Residences for a Specific Zip Code \n"
+				+ "4: Average Total Livable Area of Residences for a Specific Zip Code \n"
+				+ "5: Total Residential Market Value per Capita for a Specific Zip Code \n" + "6: Custom question"); // UPDATE
+																														// THE
+																														// QUESTION
+	}
+
 	public static void main(String[] args) {
 		PropertyReaderCSV reader = new PropertyReaderCSV("PropertiesSmall.csv");
 		HashMap<Integer, List<Object>> test = (HashMap<Integer, List<Object>>) reader.read();
 		UserInterface ui = new UserInterface(test);
 		ui.run();
-		
+
 	}
 
 }
