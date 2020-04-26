@@ -7,7 +7,7 @@ import edu.upenn.cit594.Processor.Analysis;
 public class UserInterface {
 	Map<Integer, List<Object>> parkingData, populationData,propertyData;
 	Analysis a;
-	Scanner s = new Scanner(System.in); 
+	Scanner s; 
 	
 	public UserInterface(Map<Integer, List<Object>> parkingData, Map<Integer, List<Object>> populationData , 
 			Map<Integer, List<Object>> propertyData){
@@ -22,6 +22,7 @@ public class UserInterface {
 		public void run() {
 			
 			displayMenu(); 
+			s = new Scanner(System.in);
 			//if not a number
 			if (!s.hasNextInt()) {
 				System.out.println("Integer between 0-6 not entered");
@@ -30,12 +31,20 @@ public class UserInterface {
 			//if spaces or multiple numbers
 			String userInput = s.nextLine();
 			System.out.println(userInput);
+			
 			if (userInput.length() != 1) {
 				System.out.println("Invalid integer format, please enter an intger from 0-6");
 				System.exit(0);
 			}
 				
 			int input = Integer.parseInt(userInput);
+			
+			if (input != 0 && input != 1 && input != 2 && input != 3 && input != 4 && 
+					input != 5 && input != 6) {
+				System.out.println("Integer between 0-6 not entered");
+				System.exit(0);
+			}
+			
 			
 			// continue the ui if an integer was properly selected
 		
