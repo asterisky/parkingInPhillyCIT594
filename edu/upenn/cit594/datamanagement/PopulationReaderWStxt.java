@@ -21,7 +21,7 @@ public class PopulationReaderWStxt implements Reader {
 	}
 
 	@Override
-	public Map<Integer, List<Object>> read() {
+	public HashMap<Integer, List<Object>> read() {
 		HashMap<Integer, List<Object>> population = new HashMap<>();
 
 		// import the text, read by line, parse by whitespace

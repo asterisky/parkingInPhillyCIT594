@@ -25,7 +25,7 @@ public class JSONReader implements Reader {
 	}
 
 	@Override
-	public Map<Integer, List<Object>> read() {
+	public HashMap<Integer, List<Object>> read() {
 		Map<Integer, List<Object>> parkingViolations = new HashMap<>();
 
 		try {

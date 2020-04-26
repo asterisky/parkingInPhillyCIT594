@@ -5,12 +5,13 @@ import java.util.*;
 import edu.upenn.cit594.Processor.Analysis;
 
 public class UserInterface {
-	Map<Integer, List<Object>> parkingData, populationData,propertyData;
+	HashMap<Integer, List<Object>> parkingData, populationData,propertyData;
 	Analysis a;
 	Scanner s; 
 	
-	public UserInterface(Map<Integer, List<Object>> parkingData, Map<Integer, List<Object>> populationData , 
-			Map<Integer, List<Object>> propertyData){
+	public UserInterface(HashMap<Integer, List<Object>> parkingData, HashMap<Integer, List<Object>> populationData , 
+			HashMap<Integer, List<Object>> propertyData){
+		
 		this.propertyData = propertyData;
 		this.populationData = populationData;
 		this.parkingData = parkingData;
@@ -72,7 +73,11 @@ public class UserInterface {
 					//Katie method
 				}
 				if (input==6){
-					//Aman method
+					System.out.println("Enter Zip Code");
+					int inputZip = s.nextInt(); 
+					double answer = a.averageFinesPerCapitaPerAveragePropertyValueRatio(propertyData, 
+							(TreeMap<Integer, Double>) a.totalFinesPerCapita(parkingData, populationData), inputZip);
+					System.out.println(answer);
 				}
 		}
 		
@@ -84,7 +89,7 @@ public class UserInterface {
 					+ "3: Average Market Value of Residences for a Specific Zip Code \n"
 					+ "4: Average Total Livable Area of Residences for a Specific Zip Code \n"
 					+ "5: Total Residential Market Value per Capita for a Specific Zip Code \n"
-					+ "6: Custom question"); // UPDATE THE QUESTION
+					+ "6: Ratio of Average Fines per Capita to Average Property Values for a specific Zip Code");
 		}
 
 }

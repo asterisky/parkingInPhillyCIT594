@@ -18,6 +18,7 @@ public class Analysis {
 	protected HashMap<Integer, Double> memoizationMarketValPerCapita = new HashMap<>();
 	protected HashMap<Integer, Double> avgValueResults = new HashMap<>();
 	protected HashMap<Integer, Double> avgLivableAreaResults = new HashMap<>(); 
+	protected HashMap<Integer, Double> customQuestion = new HashMap<>();
 
 	/*
 	 * Sums populations for all zip codes.
@@ -46,21 +47,21 @@ public class Analysis {
 	/*
 	 * Returns a treemap (sorted) of zip codes (key) and total fines per capita
 	 */
-	public Map<Integer, Double> totalFinesPerCapita(HashMap<Integer, List<Object>> parkingViolations,
-			HashMap<Integer, List<Object>> populations) {
+	public Map<Integer, Double> totalFinesPerCapita(HashMap<Integer, List<Object>> parkingData,
+			HashMap<Integer, List<Object>> populationData) {
 		TreeMap<Integer, Double> perCapita = new TreeMap<>();
 		// error checking and memoization
-		if (parkingViolations == null || populations == null) {
+		if (parkingData == null || populationData == null) {
 			return perCapita;
 		}
-		if (memoizationFinesPerCapita != null && memoizationFinesPerCapita.containsKey(populations)) {
-			return memoizationFinesPerCapita.get(populations);
+		if (memoizationFinesPerCapita != null && memoizationFinesPerCapita.containsKey(populationData)) {
+			return memoizationFinesPerCapita.get(populationData);
 		}
 
 		// iterate through each zip code in the populations data set
-		for (Integer z : populations.keySet()) {
-			List<Object> violations = parkingViolations.get(z);
-			int[] population = getAsInteger(populations.get(z));
+		for (Integer z : populationData.keySet()) {
+			List<Object> violations = parkingData.get(z);
+			int[] population = getAsInteger(populationData.get(z));
 			// Population, num of violations, and fines per capita should be > 0
 			if (population != null && violations != null && population[0] > 0 && violations.size() > 0) {
 				Double finesInZip = totalFinesForZip(violations, population[0]);
@@ -70,7 +71,7 @@ public class Analysis {
 			}
 		}
 
-		memoizationFinesPerCapita.put(populations, perCapita);
+		memoizationFinesPerCapita.put(populationData, perCapita);
 		return perCapita;
 	}
 
@@ -149,7 +150,7 @@ public class Analysis {
 	//Uses Strategy method to get the average value on the stored dataset, it will either use the valueAverager or LivableArea 
 		//Averager which both implement DataAverager & uses memoization to store values in a HashMap for a zipCode
 		
-		public double averageValue(Map<Integer, List<Object>> propertyData, int zipCode){
+		public double averageValue(HashMap<Integer, List<Object>> propertyData, int zipCode){
 			if (avgValueResults.containsKey(zipCode)) {
 				return avgValueResults.get(zipCode);
 			}
@@ -160,7 +161,7 @@ public class Analysis {
 			}
 		}
 		
-		public double averageLivableArea(Map<Integer, List<Object>> propertyData, int zipCode) {
+		public double averageLivableArea(HashMap<Integer, List<Object>> propertyData, int zipCode) {
 			if (avgLivableAreaResults.containsKey(zipCode)) {
 				return avgLivableAreaResults.get(zipCode);
 			}
@@ -171,9 +172,25 @@ public class Analysis {
 			}
 		}
 		
+		public double averageFinesPerCapitaPerAveragePropertyValueRatio(HashMap<Integer, List<Object>> propertyData, 
+				TreeMap<Integer, Double> perCapita,int zipCode) {
+			if (customQuestion.containsKey(zipCode)) {
+				return customQuestion.get(zipCode);
+			}
+			else {
+				double finesPerCapita = perCapita.get(zipCode);	
+				double avgPropertyValue = averageValue(propertyData, zipCode);
+				double ratio = finesPerCapita/avgPropertyValue;
+				customQuestion.put(zipCode, ratio);
+				return ratio;
+				
+			}
+			
+		}
+		
 		
 		//this is the helper method that will use the interface DataAverager to create the appropriate averager
-		private double getAverage(Map<Integer, List<Object>> propertyData, int zipCode, DataAverager da) {
+		private double getAverage(HashMap<Integer, List<Object>> propertyData, int zipCode, DataAverager da) {
 			List<Double> values = da.average(propertyData, zipCode);
 			double average =0;
 			for (Double d : values) {

@@ -9,7 +9,7 @@ public class ParkingCSVReader implements Reader {
 		filename = s; 
 	}
 
-	public Map<Integer, List<Object>> read() {
+	public HashMap<Integer, List<Object>> read() {
 		Map<Integer, List<Object>> parkingViolations = new HashMap<>(); 
 		Scanner in =null; 
 		try {

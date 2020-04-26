@@ -11,8 +11,8 @@ public class PropertyReaderCSV implements Reader {
 	}
 	
 	@Override
-	public Map<Integer, List<Object>> read() {
-		Map<Integer,List<Object>> properties = new HashMap<>();
+	public HashMap<Integer, List<Object>> read() {
+		HashMap<Integer,List<Object>> properties = new HashMap<>();
 		Scanner in = null;
 		//read in properties 
 		try {
