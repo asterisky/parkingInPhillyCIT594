@@ -50,7 +50,7 @@ public class UserInterface {
 				}
 				if (input==2){
 					Map<Integer, Double> finesPerCap = a.totalFinesPerCapita(parkingViolations, populations);
-					
+					//truncate to 4 digits after the decimal
 					for (Integer i : finesPerCap.keySet()) {
 						BigDecimal truncated = new BigDecimal(finesPerCap.get(i));
 						truncated = truncated.setScale(4, RoundingMode.FLOOR);
@@ -69,6 +69,10 @@ public class UserInterface {
 //					System.out.println(pp.averageLivableArea(inputZip)); 
 				}
 				if (input==5){
+					System.out.println("Enter Zip Code");
+					int inputZip = s.nextInt();
+					System.out.println(a.totalMarketValForZip(inputZip, properties, populations));
+
 					//Katie method
 				}
 				if (input==6){
