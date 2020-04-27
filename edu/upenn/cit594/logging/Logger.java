@@ -3,22 +3,18 @@
  */
 package edu.upenn.cit594.logging;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Set;
-
-import edu.upenn.cit594.datamanagement.FluTweet;
+import java.io.*;
 
 /**
- * @author Aman Nischal and Katie Pizziketti
- * Record user inputs and activities by writing to the log file that was specified as a runtime argument.
+ * @author Aman Nischal and Katie Pizziketti Record user inputs and activities
+ *         by writing to the log file that was specified as a runtime argument.
  *
  */
 public class Logger {
 
 	private static File filename;
 	protected PrintWriter pw;
-	
+
 	// private constructor for singleton pattern
 	private Logger() {
 	}
@@ -31,13 +27,16 @@ public class Logger {
 		return instance;
 	}
 
-	// start the log file
-	public void initLogFileName(String[] args) {
+	/**
+	 * Start the log file (from main with runtime args)
+	 * 
+	 * @param args
+	 */
+	public void startLogFile(String[] args) {
 		filename = new File(args[4]);
 		try {
 			pw = new PrintWriter(filename);
 
-			// take the output file from the user and store as string
 			long time = System.currentTimeMillis();
 
 			pw.println(time + " " + args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4]);
@@ -48,15 +47,18 @@ public class Logger {
 			System.out.println("There was a problem with processing the log file");
 		}
 	}
-	
-	//run when opening a file for reading
+
+	/**
+	 * when file is opened for reading, pass in the filename as string
+	 * 
+	 * @param file
+	 */
 	public void logOpenFile(String file) {
 		try {
-		
-			// take the output file from the user and store as string
+
 			long time = System.currentTimeMillis();
 
-			pw.println(time + " " + filename);
+			pw.println(time + " " + file);
 			pw.flush();
 		}
 
@@ -65,11 +67,28 @@ public class Logger {
 		}
 	}
 
-	//log user inputs
-	public void startLog(String input) {
+	/**
+	 * takes user input string - selection or zip
+	 * 
+	 * @param input
+	 */
+	public void log(String input) {
+		try {
+
+			long time = System.currentTimeMillis();
+
+			pw.println(time + " " + input);
+			pw.flush();
+		}
+
+		catch (Exception e) {
+			System.out.println("There was a problem with processing the log file");
+		}
 	}
-	
-	//close the logger's printwriter when done with the file
+
+	/**
+	 * please run this at the end of program to close the printwriter
+	 */
 	public void closeLog() {
 		pw.close();
 	}
