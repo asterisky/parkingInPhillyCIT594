@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 import edu.upenn.cit594.datamanagement.*;
+=======
+import edu.upenn.cit594.datamanagement.Processor;
+import edu.upenn.cit594.datamanagement.Reader;
+import edu.upenn.cit594.datamanagement.UserInterface;
+import edu.upenn.cit594.logging.Logger;
+>>>>>>> branch 'master' of https://github.com/asterisky/parkingInPhillyCIT594
 
 public class Main {
 	public static void main(String[] args) {
+		Logger.getLogger().startLogFile(args);
 		//if length of arguments is incorrect
 		if (args.length < 5) {
 			System.out.println("not enough arguments");
@@ -39,7 +47,7 @@ public class Main {
 		//Fill in all the items*****
 		//CODE HERE
 		
-		
+		Logger.getLogger().closeLog();
 	}
 
 }

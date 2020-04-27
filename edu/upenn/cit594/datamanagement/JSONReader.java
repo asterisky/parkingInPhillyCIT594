@@ -4,6 +4,7 @@
 package edu.upenn.cit594.datamanagement;
 
 import java.io.*;
+import edu.upenn.cit594.logging.*;
 import java.util.*;
 
 import org.json.simple.JSONArray;
@@ -32,6 +33,7 @@ public class JSONReader implements Reader {
 			// create helper objects to parse the JSON
 			JSONParser parser = new JSONParser();
 			JSONArray dataArray = (JSONArray) parser.parse(new FileReader(filename));
+			Logger.getLogger().logOpenFile(filename);
 			Iterator iter = dataArray.iterator();
 
 			// iterate through the JSON object lines to get the desired data into the Set

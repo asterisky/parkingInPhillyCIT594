@@ -1,38 +1,40 @@
 package edu.upenn.cit594.datamanagement;
 
+import java.math.*;
 import java.util.*;
 
 import edu.upenn.cit594.Processor.Analysis;
+import edu.upenn.cit594.logging.Logger;
+
 
 public class UserInterface {
-	HashMap<Integer, List<Object>> parkingData, populationData,propertyData;
-	Analysis a;
-	Scanner s; 
-	
-	public UserInterface(HashMap<Integer, List<Object>> parkingData, HashMap<Integer, List<Object>> populationData , 
-			HashMap<Integer, List<Object>> propertyData){
-		
-		this.propertyData = propertyData;
-		this.populationData = populationData;
-		this.parkingData = parkingData;
-		a = new Analysis();
-		
-		
+	protected Analysis a = new Analysis();
+	protected Scanner s = new Scanner(System.in);
+	protected HashMap<Integer, List<Object>> properties;
+	protected HashMap<Integer, List<Object>> parkingViolations;
+	protected HashMap<Integer, List<Object>> populations;
+//Constructor
+	public UserInterface(Map<Integer, List<Object>> propertyData,
+			Map<Integer, List<Object>> parkingViolationData, Map<Integer, List<Object>> populationData) {
+		this.properties = (HashMap<Integer, List<Object>>) propertyData;
+		this.parkingViolations = (HashMap<Integer, List<Object>>) parkingViolationData;
+		this.populations = (HashMap<Integer, List<Object>>) populationData;
 	}
-		
-		public void run() {
+
+	public void run() {
 			
 			displayMenu(); 
 			s = new Scanner(System.in);
+			
 			//if not a number
 			if (!s.hasNextInt()) {
 				System.out.println("Integer between 0-6 not entered");
 				System.exit(0);
 			}
+			
 			//if spaces or multiple numbers
 			String userInput = s.nextLine();
-			System.out.println(userInput);
-			
+
 			if (userInput.length() != 1) {
 				System.out.println("Invalid integer format, please enter an intger from 0-6");
 				System.exit(0);
@@ -45,43 +47,48 @@ public class UserInterface {
 				System.out.println("Integer between 0-6 not entered");
 				System.exit(0);
 			}
-			
-			
-			// continue the ui if an integer was properly selected
+			Logger.getLogger().log(userInput);
 		
 				if (input==0){
 					System.exit(0);
 				}
 				
 				if (input==1){
-					//Katie method
+					System.out.println(a.totalPopulationByZip(populations));
 				}
 				if (input==2){
-					TreeMap<Integer, Double> outputMap = (TreeMap<Integer, Double>) a.totalFinesPerCapita(parkingData, populationData);
-					for (int i : outputMap.keySet()) {
-						double perCapita = outputMap.get(i);
-						String strPerCapita = String.format("%.2f", perCapita);
-						System.out.println(i+" "+strPerCapita);
+					Map<Integer, Double> finesPerCap = a.totalFinesPerCapita(parkingViolations, populations);
+					//truncate to 4 digits after the decimal
+					for (Integer i : finesPerCap.keySet()) {
+						BigDecimal truncated = new BigDecimal(finesPerCap.get(i));
+						truncated = truncated.setScale(4, RoundingMode.FLOOR);
+
+						System.out.println(i + " " + truncated);
 					}
 				}
 				if (input==3){
 					System.out.println("Enter Zip Code");
-					int inputZip = s.nextInt(); 
-					System.out.println(a.averageValue(propertyData, inputZip)); 
+					int inputZip = s.nextInt();
+					Logger.getLogger().log(inputZip);
 				}
 				if (input==4){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					System.out.println(a.averageLivableArea(propertyData, inputZip)); 
+					System.out.println(a.averageLivableArea(properties, inputZip)); 
+					Logger.getLogger().log(inputZip);
 				}
 				if (input==5){
-					//Katie method
+					System.out.println("Enter Zip Code");
+					int inputZip = s.nextInt();
+					Logger.getLogger().log(inputZip);
+
+					System.out.println(a.totalMarketValForZip(inputZip, properties, populations));
 				}
 				if (input==6){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
-					double answer = a.averagePropertyValuePerAverageFinesPerCapitaRatio(propertyData, 
-							(TreeMap<Integer, Double>) a.totalFinesPerCapita(parkingData, populationData), inputZip);
+					double answer = a.averagePropertyValuePerAverageFinesPerCapitaRatio(properties, 
+							(TreeMap<Integer, Double>) a.totalFinesPerCapita(parkingViolations, populations), inputZip);
 					System.out.println(answer);
 				}
 		}
@@ -96,5 +103,8 @@ public class UserInterface {
 					+ "5: Total Residential Market Value per Capita for a Specific Zip Code \n"
 					+ "6: Ratio of Average Fines per Capita to Average Property Values for a specific Zip Code");
 		}
+
+
+
 
 }

@@ -3,6 +3,8 @@ package edu.upenn.cit594.datamanagement;
 import java.io.File;
 import java.util.*;
 
+import edu.upenn.cit594.logging.Logger;
+
 public class PropertyReaderCSV implements Reader {
 	String filename; 
 	
@@ -17,6 +19,8 @@ public class PropertyReaderCSV implements Reader {
 		//read in properties 
 		try {
 			in = new Scanner(new File(filename));
+			Logger.getLogger().logOpenFile(filename);
+
 			String[] headers = in.nextLine().split(",");
 			in.nextLine();
 			//index column location of relevant values 
