@@ -33,6 +33,12 @@ public class Logger {
 	 * @param args
 	 */
 	public void startLogFile(String[] args) {
+		if(args.length < 5) {
+			int numArgs = args.length;
+			for(int i = numArgs - 5; i > 0; i--) {
+				args[i + numArgs] = ""; 
+			}
+		}
 		filename = new File(args[4]);
 		try {
 			pw = new PrintWriter(filename);

@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import edu.upenn.cit594.logging.Logger;
+
 /**
  * @author Aman Nischal and Katie Pizziketti reads population data from a
  *         whitespace-separated text document.
@@ -26,6 +28,8 @@ public class PopulationReaderWStxt implements Reader {
 
 		// import the text, read by line, parse by whitespace
 		File file = new File(filename);
+		Logger.getLogger().logOpenFile(filename);
+
 		Scanner s; // scanner needed to look at the file
 
 		try {

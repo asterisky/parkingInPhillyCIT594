@@ -2,6 +2,8 @@ package edu.upenn.cit594.datamanagement;
 import java.io.File;
 import java.util.*;
 
+import edu.upenn.cit594.logging.Logger;
+
 public class ParkingCSVReader implements Reader {
 	protected String filename; 
 	
@@ -14,6 +16,8 @@ public class ParkingCSVReader implements Reader {
 		Scanner in =null; 
 		try {
 			in = new Scanner(new File(filename));
+			Logger.getLogger().logOpenFile(filename);
+
 			while (in.hasNextLine()) {
 				
 				String line = in.nextLine();
