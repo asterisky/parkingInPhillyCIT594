@@ -91,6 +91,23 @@ public class Logger {
 			System.out.println("There was a problem with processing the log file");
 		}
 	}
+	/**
+	 * Overloaded to handle ints too via the power of concatenation!
+	 * @param input
+	 */
+	public void log(int input) {
+		try {
+
+			long time = System.currentTimeMillis();
+
+			pw.println(time + " " + input);
+			pw.flush();
+		}
+
+		catch (Exception e) {
+			System.out.println("There was a problem with processing the log file");
+		}
+	}
 
 	/**
 	 * please run this at the end of program to close the printwriter

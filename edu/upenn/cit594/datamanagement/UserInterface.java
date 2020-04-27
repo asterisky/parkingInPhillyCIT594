@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.util.*;
 
 import edu.upenn.cit594.Processor.*;
+import edu.upenn.cit594.logging.Logger;
 
 public class UserInterface {
 	// Analysis class only ----
@@ -32,6 +33,7 @@ public class UserInterface {
 			}
 			//if spaces or multiple numbers
 			String userInput = s.nextLine();
+			Logger.getLogger().log(userInput);
 			if (userInput.length() != 1) {
 				System.out.println("Invalid integer format, please enter an intger from 0-6");
 				System.exit(0);
@@ -60,17 +62,23 @@ public class UserInterface {
 				}
 				if (input==3){
 					System.out.println("Enter Zip Code");
-					int inputZip = s.nextInt(); 
+					int inputZip = s.nextInt();
+					Logger.getLogger().log(inputZip);
+
 //					System.out.println(pp.averageValue(inputZip)); 
 				}
 				if (input==4){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt(); 
+					Logger.getLogger().log(inputZip);
+
 //					System.out.println(pp.averageLivableArea(inputZip)); 
 				}
 				if (input==5){
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt();
+					Logger.getLogger().log(inputZip);
+
 					System.out.println(a.totalMarketValForZip(inputZip, properties, populations));
 				}
 				if (input==6){
