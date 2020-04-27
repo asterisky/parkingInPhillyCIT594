@@ -72,8 +72,6 @@ public class UserInterface {
 					System.out.println("Enter Zip Code");
 					int inputZip = s.nextInt();
 					System.out.println(a.totalMarketValForZip(inputZip, properties, populations));
-
-					//Katie method
 				}
 				if (input==6){
 					//Aman method
